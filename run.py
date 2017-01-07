@@ -1,5 +1,4 @@
 import os
-import string
 
 
 class Thing:
@@ -14,6 +13,12 @@ class SweepChooser:
         self.options = []
         pass
 
+    def add_participant(self, name):
+        self.participants.append(Thing(name))
+
+    def add_option(self, name):
+        self.options.append(Thing(name))
+
 
 class Greeter:
     def __init__(self):
@@ -26,12 +31,36 @@ class Greeter:
         print("**********************************************")
 
 
-os.system("cls")
+class Program:
+    def __init__(self):
+        self._step = 0
+        self._chooser = SweepChooser()
+        pass
 
-Greeter.greet()
+    def ask_for_participant(self):
+        print("Enter participant name or N to go to next step: ")
+        _in = raw_input()
+        self._chooser.add_participant(_in)
+        if _in == "N":
+            self._step += 1
 
-_input = ''
+    def ask_for_option(self):
+        print("Enter option name or N to go to next step: ")
+        _in = raw_input()
+        self._chooser.add_option(_in)
+        if _in == "N":
+            self._step += 1
 
-while _input != 'q':
-    _input = string.strip(raw_input())
-    print(_input)
+    def run(self):
+        os.system("cls")
+
+        Greeter.greet()
+
+        while True:
+            if self._step == 0:
+                self.ask_for_participant()
+            elif self._step == 1:
+                self.ask_for_option()
+
+
+Program().run()
