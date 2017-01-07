@@ -61,6 +61,8 @@ class Program:
                 self.ask_for_participant()
             elif self._step == 1:
                 self.ask_for_option()
+            else:
+                break
 
 
 Program().run()
