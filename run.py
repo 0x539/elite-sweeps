@@ -89,7 +89,7 @@ class Program:
                 print("\nOptions: ")
                 output_things(self._chooser.options)
                 self._chooser.match_participants()
-                print("\n`Selections: ")
+                print("\nSelections: ")
                 output_things(self._chooser.selections)
                 break
 
