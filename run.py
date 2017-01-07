@@ -1,6 +1,5 @@
 import os
 import string
-from sys import stdin, stdout
 
 
 class Thing:
@@ -25,6 +24,7 @@ class Greeter:
         print("**********************************************")
         print("***         Sweep stake Generator          ***")
         print("**********************************************")
+
 
 os.system("cls")
 
