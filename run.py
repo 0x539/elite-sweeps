@@ -3,6 +3,11 @@ import random
 import string
 
 
+def output_things(_things):
+    for x in _things:
+        print x
+
+
 class Thing:
     def __init__(self, name):
         self.name = name
@@ -43,11 +48,6 @@ class Greeter:
         print("**********************************************")
         print("***         Sweep stake Generator          ***")
         print("**********************************************")
-
-
-def output_things(_things):
-    for x in _things:
-        print x
 
 
 class Program:
