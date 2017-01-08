@@ -59,6 +59,8 @@ class State:
         return None
 
     def run(self):
+        os.system("cls")
+        Greeter.greet()
         pass
 
 
@@ -72,6 +74,7 @@ class AskForParticipantState(State):
             return self
 
     def run(self):
+        State.run(self)
         print("Enter participant name or nothing to go to next step: ")
 
 
@@ -85,6 +88,7 @@ class AskForOptionState(State):
             return self
 
     def run(self):
+        State.run(self)
         print("Enter option name or nothing to go to next step: ")
 
 
@@ -96,6 +100,7 @@ class CompleteState(State):
         return None
 
     def run(self):
+        State.run(self)
         print("Participants: ")
         output_things(self._chooser.participants)
         print("\nOptions: ")
