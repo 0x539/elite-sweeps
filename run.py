@@ -51,29 +51,73 @@ class Greeter:
 
 
 class State:
-    def __init__(self, next_state=None):
-        self.next_state = next_state
+    def __init__(self, chooser):
+        self._chooser = chooser
         pass
+
+    def get_next_state(self):
+        return None
 
     def run(self):
         pass
 
 
+class AskForParticipantState(State):
+    def get_next_state(self):
+        _input = string.strip(raw_input())
+        if _input == "":
+            return AskForOptionState(self._chooser)
+        else:
+            self._chooser.add_participant(_input)
+            return self
+
+    def run(self):
+        print("Enter participant name or nothing to go to next step: ")
+
+
+class AskForOptionState(State):
+    def get_next_state(self):
+        _input = string.strip(raw_input())
+        if _input == "":
+            return CompleteState(self._chooser)
+        else:
+            self._chooser.add_option(_input)
+            return self
+
+    def run(self):
+        print("Enter option name or nothing to go to next step: ")
+
+
+class CompleteState(State):
+    def __init__(self, chooser):
+        State.__init__(self, chooser)
+
+    def get_next_state(self):
+        return None
+
+    def run(self):
+        print("Participants: ")
+        output_things(self._chooser.participants)
+        print("\nOptions: ")
+        output_things(self._chooser.options)
+        self._chooser.match_participants()
+        print("\nSelections: ")
+        output_things(self._chooser.selections)
+
+
 class StateManager:
-    def __init__(self, default_state):
-        self._default_state = default_state
-        self._current_state = None
-        self._next_state = None
-        self._previous_state = None
+    def __init__(self, chooser, initial_state):
+        self._chooser = chooser
+        self._current_state = initial_state
         pass
 
     def run(self):
         while True:
-            if self._current_state is None:
-                self._default_state.run()
-            else:
+            if self._current_state is not None:
                 self._current_state.run()
-                self._current_state = self._current_state.next_state
+                self._current_state = self._current_state.get_next_state()
+            else:
+                break
         pass
 
 
@@ -83,42 +127,9 @@ class Program:
         self._chooser = SweepChooser()
         pass
 
-    def ask_for_participant(self):
-        print("Enter participant name or nothing to go to next step: ")
-        _in = raw_input()
-        if _in == "":
-            self._step += 1
-        else:
-            self._chooser.add_participant(_in)
-
-    def ask_for_option(self):
-        print("Enter option name or nothing to go to next step: ")
-        _in = string.strip(raw_input())
-        if _in == "":
-            self._step += 1
-        else:
-            self._chooser.add_option(_in)
-
-    def clear(self):
-        os.system("cls")
-        Greeter.greet()
-
     def run(self):
-        while True:
-            self.clear()
-            if self._step == 0:
-                self.ask_for_participant()
-            elif self._step == 1:
-                self.ask_for_option()
-            else:
-                print("Participants: ")
-                output_things(self._chooser.participants)
-                print("\nOptions: ")
-                output_things(self._chooser.options)
-                self._chooser.match_participants()
-                print("\nSelections: ")
-                output_things(self._chooser.selections)
-                break
+        _initial_state = AskForParticipantState(self._chooser)
+        StateManager(self._chooser, _initial_state).run()
 
 
 Program().run()
