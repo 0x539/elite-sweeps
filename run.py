@@ -50,6 +50,33 @@ class Greeter:
         print("**********************************************")
 
 
+class State:
+    def __init__(self, next_state=None):
+        self.next_state = next_state
+        pass
+
+    def run(self):
+        pass
+
+
+class StateManager:
+    def __init__(self, default_state):
+        self._default_state = default_state
+        self._current_state = None
+        self._next_state = None
+        self._previous_state = None
+        pass
+
+    def run(self):
+        while True:
+            if self._current_state is None:
+                self._default_state.run()
+            else:
+                self._current_state.run()
+                self._current_state = self._current_state.next_state
+        pass
+
+
 class Program:
     def __init__(self):
         self._step = 0
