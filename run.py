@@ -1,6 +1,6 @@
 import random
 
-from States import AskForParticipantState
+from States import StateManager
 
 
 class Thing:
@@ -45,22 +45,6 @@ class Greeter:
         print("**********************************************")
 
 
-class StateManager:
-    def __init__(self, chooser, initial_state):
-        self._chooser = chooser
-        self._current_state = initial_state
-        pass
-
-    def run(self):
-        while True:
-            if self._current_state is not None:
-                self._current_state.run()
-                self._current_state = self._current_state.get_next_state()
-            else:
-                break
-        pass
-
-
 class Program:
     def __init__(self):
         self._step = 0
@@ -68,8 +52,7 @@ class Program:
         pass
 
     def run(self):
-        _initial_state = AskForParticipantState(self._chooser)
-        StateManager(self._chooser, _initial_state).run()
+        StateManager(self._chooser).run()
 
 
 Program().run()

@@ -7,6 +7,27 @@ def output_things(_things):
         print x
 
 
+class StateManager:
+    def __init__(self, chooser, initial_state=None):
+        self._chooser = chooser
+
+        if initial_state is None:
+            self._current_state = AskForParticipantState(self._chooser)
+        else:
+            self._current_state = initial_state
+
+    pass
+
+    def run(self):
+        while True:
+            if self._current_state is not None:
+                self._current_state.run()
+                self._current_state = self._current_state.get_next_state()
+            else:
+                break
+        pass
+
+
 class State:
     def __init__(self, chooser):
         self._chooser = chooser
